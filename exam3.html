@@ -1,0 +1,1488 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CCE Practice Exam 3</title>
+<style>
+:root{--hdr:#1f3a64;--hdr2:#2c4f85;--bg:#eef1f5;--card:#fff;--line:#d5dbe3;--text:#1b2430;--muted:#5f6c7b;
+  --ok:#1f8a4c;--okbg:#e6f4ec;--bad:#c62f2f;--badbg:#fbeaea;--sel:#e8effa;--accent:#2c6bc9;--flag:#e08a00}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif;font-size:16px}
+button{font:inherit;cursor:pointer}
+button:disabled{opacity:.45;cursor:default}
+a{color:var(--accent)}
+
+/* ---------- start / results pages ---------- */
+.page{max-width:900px;margin:0 auto;padding:20px 16px 40px}
+.brand{background:var(--hdr);color:#fff;padding:14px 18px;border-radius:10px 10px 0 0}
+.brand{display:flex;align-items:center;justify-content:space-between;gap:14px}
+.brand h1{margin:0;font-size:1.35em}
+.logo{display:inline-flex;background:#fff;border-radius:8px;padding:4px 8px;flex:0 0 auto;line-height:0}
+.logo img{height:44px;width:auto;display:block}
+.top .logo{padding:3px 6px;border-radius:6px}
+.top .logo img{height:30px}
+@media (max-width:760px){.logo img{height:34px}.top .logo img{height:24px}.top{padding:6px}.top .l,.top .r{gap:6px}.ic{padding:6px 9px}.timer{font-size:.85em;padding:4px 6px}.flagbtn{padding:6px 7px}}
+.brand p{margin:4px 0 0;opacity:.85;font-size:.9em}
+.card{background:var(--card);border:1px solid var(--line);border-radius:0 0 10px 10px;padding:20px;margin-bottom:18px}
+.card.solo{border-radius:10px}
+.card h2{margin:0 0 12px;font-size:1.1em}
+.row{display:flex;gap:12px;flex-wrap:wrap}
+.field label{display:block;font-size:.85em;color:var(--muted);margin-bottom:4px}
+.field input{width:100%;max-width:360px;padding:10px;border:1px solid var(--line);border-radius:6px;font:inherit}
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+.mode{border:2px solid var(--line);border-radius:8px;padding:12px 14px;background:#fff;text-align:left}
+.mode b{display:block;margin-bottom:4px}
+.mode span{font-size:.88em;color:var(--muted)}
+.mode.on{border-color:var(--accent);background:var(--sel)}
+.btn{background:var(--accent);color:#fff;border:0;border-radius:6px;padding:11px 20px;font-weight:700}
+.btn.ghost{background:#fff;color:var(--accent);border:1.5px solid var(--accent)}
+.btn.sm{padding:6px 12px;font-size:.85em}
+.btn.red{background:var(--bad)}
+table{width:100%;border-collapse:collapse;font-size:.9em}
+th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:600;font-size:.82em;text-transform:uppercase;letter-spacing:.03em}
+tr.click{cursor:pointer}
+tr.click:hover td{background:#f6f8fb}
+.pill{display:inline-block;padding:2px 8px;border-radius:12px;font-size:.78em;font-weight:700;color:#fff}
+.pill.ok{background:var(--ok)}.pill.bad{background:var(--bad)}.pill.om{background:#8a96a6}
+.scorebox{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
+.big{font-size:3em;font-weight:800;color:var(--hdr);line-height:1}
+.stats{display:flex;gap:10px;flex-wrap:wrap}
+.stat{background:var(--bg);border-radius:8px;padding:10px 14px;min-width:96px}
+.stat b{display:block;font-size:1.3em}
+.stat span{font-size:.8em;color:var(--muted)}
+.meter{height:10px;background:var(--bg);border-radius:6px;overflow:hidden;display:flex;margin:14px 0 4px}
+.meter i{display:block;height:100%}
+.muted{color:var(--muted);font-size:.88em}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.scroll{overflow-x:auto}
+
+/* ---------- exam interface ---------- */
+.shell{display:flex;flex-direction:column;height:100vh}
+.top{background:var(--hdr);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:6px 10px;gap:8px;flex:0 0 auto}
+.top .l,.top .r{display:flex;align-items:center;gap:10px;flex:1}
+.top .r{justify-content:flex-end}
+.top .c{display:flex;gap:4px}
+.item{font-weight:700;font-size:.95em;white-space:nowrap}
+.qid{font-size:.75em;opacity:.8;white-space:nowrap}
+.ic{background:transparent;border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:6px;padding:6px 12px;font-size:1em;line-height:1}
+.ic:hover:not(:disabled){background:var(--hdr2)}
+.flagbtn{background:transparent;border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:6px;padding:6px 10px;font-size:.85em;white-space:nowrap}
+.flagbtn.on{background:var(--flag);border-color:var(--flag)}
+.timer{font-family:"Courier New",monospace;font-weight:700;background:rgba(0,0,0,.2);padding:5px 10px;border-radius:6px;white-space:nowrap}
+.timer.low{background:var(--bad)}
+.body{flex:1;display:flex;min-height:0}
+.nav{width:76px;background:#fff;border-right:1px solid var(--line);overflow-y:auto;flex:0 0 auto}
+.nav button{display:flex;align-items:center;justify-content:center;gap:4px;width:100%;border:0;border-bottom:1px solid #edf0f4;background:#fff;padding:9px 4px;font-size:.88em;position:relative}
+.nav button.cur{background:var(--sel);font-weight:700;box-shadow:inset 4px 0 0 var(--accent)}
+.nav button.ans:not(.rv)::after{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent);position:absolute;right:8px}
+.nav button.rv.ok{color:var(--ok)}
+.nav button.rv.bad{color:var(--bad)}
+.nav .fl{color:var(--flag);font-size:.85em}
+.main{flex:1;overflow-y:auto;padding:22px 26px 40px;background:#fff}
+.qwrap{max-width:860px}
+.stem{line-height:1.6;margin:0 0 16px;font-size:1.02em}
+.media{margin:0 0 18px;display:grid;gap:10px;max-width:640px}
+.media img,.media video{width:100%;border:1px solid var(--line);border-radius:4px;background:#000;display:block}
+.media .frame{position:relative;padding-top:56.25%}
+.media iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.choices{border:1px solid var(--line);border-radius:4px;max-width:640px;margin-bottom:16px}
+.ch{display:flex;align-items:flex-start;gap:10px;width:100%;text-align:left;background:#fff;border:0;border-bottom:1px solid #edf0f4;padding:11px 12px;line-height:1.45}
+.ch:last-child{border-bottom:0}
+.ch:hover:not(:disabled){background:#f6f8fb}
+.ch:disabled{cursor:default;color:inherit;opacity:1}
+.radio{flex:0 0 18px;height:18px;border:2px solid #8a96a6;border-radius:50%;margin-top:2px;position:relative}
+.ch.sel .radio{border-color:var(--accent)}
+.ch.sel .radio::after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--accent)}
+.ch .mk{flex:0 0 20px;font-weight:800;text-align:center}
+.ch.ok{background:var(--okbg)} .ch.ok .mk{color:var(--ok)}
+.ch.bad{background:var(--badbg)} .ch.bad .mk{color:var(--bad)}
+.ch.strike .txt{text-decoration:line-through;color:#9aa5b3}
+.hint{font-size:.8em;color:var(--muted);margin:-8px 0 16px}
+.exp{border-top:3px solid var(--hdr);padding-top:16px;margin-top:8px}
+.verdict{font-weight:700;font-size:1.05em;margin-bottom:10px}
+.verdict.ok{color:var(--ok)}.verdict.bad{color:var(--bad)}.verdict.om{color:var(--muted)}
+.exp h3{margin:0 0 8px;font-size:1em;color:var(--hdr)}
+.exp p{line-height:1.6;margin:0 0 10px}
+.obj{background:#f2f6fc;border-left:4px solid var(--hdr);padding:10px 14px;margin:14px 0}
+.obj b{display:block;color:var(--hdr);font-size:.82em;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
+.refs{font-size:.8em;color:var(--muted)}
+.bot{background:var(--hdr);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:8px 12px;gap:8px;flex:0 0 auto}
+.bot .lab{font-size:.85em;opacity:.85}
+.toast{position:fixed;left:50%;bottom:70px;transform:translateX(-50%);background:#222;color:#fff;padding:10px 16px;border-radius:6px;font-size:.9em;z-index:9}
+.modalbg{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;z-index:10;padding:16px}
+.modal{background:#fff;border-radius:10px;padding:20px;max-width:380px;width:100%}
+.modal h3{margin:0 0 8px}
+.modal .actions{justify-content:flex-end}
+
+@media (max-width:760px){
+  .nav{position:absolute;top:48px;bottom:48px;left:0;z-index:5;box-shadow:2px 0 8px rgba(0,0,0,.15);display:none}
+  .nav.open{display:block}
+  .main{padding:16px 14px 30px}
+  .qid{display:none}
+  .modes{grid-template-columns:1fr}
+  .hidesm{display:none}
+}
+@media (min-width:761px){#navbtn{display:none}}
+@media print{
+  body{background:#fff}
+  .noprint{display:none!important}
+  .card{border:0;padding:0}
+  .page{padding:0}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+/* =====================================================================
+   EXAM CONTENT. To add a clip or image to a question, paste the link into
+   that question's video: "" (YouTube, Vimeo, .mp4) or image: "" (image file URL).
+   Open the page with ?edit at the end of the URL to see every empty media slot.
+   ===================================================================== */
+const QUIZ = {
+ "id": "cce-practice-exam-3",
+ "title": "CCE Practice Exam 3",
+ "subtitle": "Pulmonary POCUS | Critical Care Echocardiography Board-Style Practice Exam | 50 questions",
+ "secondsPerQuestion": 84,
+ "logo": "",
+ "questions": [
+  {
+   "id": "PE3-01",
+   "topic": "LV systolic function",
+   "stem": "LV end-diastolic diameter is 56 mm and end-systolic diameter is 46 mm. What is the fractional shortening and its interpretation?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "18%, reduced",
+    "25%, normal",
+    "36%, normal",
+    "45%, hyperdynamic"
+   ],
+   "answer": "A",
+   "explanation": [
+    "FS = (LVEDD - LVESD) / LVEDD = (56 - 46) / 56 = 18%. Normal FS is about 25% to 45%.",
+    "FS samples only the basal segments, so it is unreliable with regional wall motion abnormalities and should not be used to calculate EF."
+   ],
+   "objective": "FS = (EDD - ESD) / EDD; normal about 25% to 45%.",
+   "refs": "Study Guide 01.A.01, Fractional shortening",
+   "mediaNote": "PLAX M-mode at the mitral chordae level"
+  },
+  {
+   "id": "PE3-02",
+   "topic": "Myocardial strain",
+   "stem": "A patient on trastuzumab has an LVEF of 58%, but global longitudinal strain has changed from -21% to -15%. What is the best interpretation?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "Normal; GLS of -15% is better than -21%",
+    "Measurement error, because GLS cannot change while EF is normal",
+    "Improved function",
+    "Subclinical LV dysfunction; a relative fall over 15% is significant"
+   ],
+   "answer": "D",
+   "explanation": [
+    "GLS is negative because the myocardium shortens. A less negative value means less shortening. A relative decline of more than about 15% from baseline suggests subclinical cardiotoxicity even when EF is normal.",
+    "Normal GLS is about -18% or more negative. Use the same vendor and software for serial comparisons."
+   ],
+   "objective": "A relative GLS fall over 15% suggests subclinical LV dysfunction despite normal EF.",
+   "refs": "Study Guide 01.A.05.2, Myocardial strain",
+   "mediaNote": "Bullseye plot of longitudinal strain"
+  },
+  {
+   "id": "PE3-03",
+   "topic": "LV hypertrophy",
+   "stem": "A patient has an increased LV mass index and relative wall thickness of 0.50. What is the LV geometry?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "Concentric remodeling",
+    "Normal geometry",
+    "Concentric hypertrophy",
+    "Eccentric hypertrophy"
+   ],
+   "answer": "C",
+   "explanation": [
+    "Increased LV mass with relative wall thickness over 0.42 is concentric hypertrophy, typical of pressure overload such as hypertension or AS.",
+    "Normal mass with RWT over 0.42 is concentric remodeling. Increased mass with RWT of 0.42 or less is eccentric hypertrophy, typical of volume overload."
+   ],
+   "objective": "High LV mass + RWT over 0.42 = concentric hypertrophy.",
+   "refs": "Study Guide 01.A, Hypertrophy and remodeling"
+  },
+  {
+   "id": "PE3-04",
+   "topic": "Diastolic function",
+   "stem": "Mitral inflow shows E/A of 2.6 and deceleration time of 130 ms in a patient with dilated cardiomyopathy. What is the classification and implication?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "Grade I, normal filling pressure",
+    "Grade II, mildly elevated filling pressure",
+    "Grade III restrictive filling, high LA pressure and poor prognosis",
+    "Normal young-adult pattern"
+   ],
+   "answer": "C",
+   "explanation": [
+    "A tall E wave (E/A of 2 or more) with a short deceleration time (under about 160 ms) reflects a stiff LV with high LA pressure, the restrictive pattern.",
+    "In a young athlete a high E/A can be normal, but the deceleration time and e' are normal then."
+   ],
+   "objective": "E/A of 2 or more with a short DT is restrictive (Grade III) filling.",
+   "refs": "Study Guide 01.A.02, Grade 3 diastolic dysfunction",
+   "mediaNote": "Mitral inflow with tall E wave and short deceleration time"
+  },
+  {
+   "id": "PE3-05",
+   "topic": "Diastolic function",
+   "stem": "Pulmonary vein atrial reversal (Ar) duration is 170 ms and mitral A wave duration is 120 ms. What does this indicate?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "Low LA pressure",
+    "Elevated LV end-diastolic pressure",
+    "Normal LV filling",
+    "Severe mitral stenosis"
+   ],
+   "answer": "B",
+   "explanation": [
+    "When LVEDP is high, atrial contraction pushes more blood backward into the pulmonary veins and less forward across the mitral valve. An Ar duration more than 30 ms longer than the mitral A duration indicates elevated LVEDP.",
+    "Here the difference is 50 ms. This sign is useful when E/A looks normal."
+   ],
+   "objective": "Ar minus A duration over 30 ms indicates elevated LVEDP.",
+   "refs": "Study Guide 01.A.02, Ar-A wave difference",
+   "mediaNote": "Pulmonary vein Ar and mitral A wave durations"
+  },
+  {
+   "id": "PE3-06",
+   "topic": "Systemic disease",
+   "stem": "A patient with persistent eosinophilia over 1,500 per microliter has apical obliteration of the LV by echogenic material, a tethered posterior mitral leaflet with MR, and restrictive filling. What is the most likely diagnosis?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "Takotsubo syndrome",
+    "Hypereosinophilic syndrome (Loeffler endocarditis)",
+    "Cardiac sarcoidosis",
+    "Apical hypertrophic cardiomyopathy"
+   ],
+   "answer": "B",
+   "explanation": [
+    "Eosinophil-mediated endomyocardial damage causes thrombus and fibrosis that fill the apex, tether the posterior mitral leaflet, and produce restrictive physiology.",
+    "Apical HCM thickens the apical myocardium itself, giving a spade-shaped cavity, without thrombus or eosinophilia."
+   ],
+   "objective": "Hypereosinophilic syndrome: apical obliteration, posterior leaflet tethering, restrictive filling.",
+   "refs": "Study Guide 06, Hypereosinophilic Syndrome",
+   "mediaNote": "Apical 4-chamber clip with apical obliteration"
+  },
+  {
+   "id": "PE3-07",
+   "topic": "Cardiac tumors",
+   "stem": "What is the most common cardiac tumor overall?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "Metastatic tumor to the heart",
+    "Atrial myxoma",
+    "Papillary fibroelastoma",
+    "Angiosarcoma"
+   ],
+   "answer": "A",
+   "explanation": [
+    "Metastases to the heart or pericardium are far more common than primary cardiac tumors. Lung and breast cancer, melanoma, and lymphoma are common sources, often presenting with pericardial effusion.",
+    "Among primary tumors, myxoma is the most common benign tumor and angiosarcoma (often in the RA) is the most common malignant one."
+   ],
+   "objective": "Metastases are the most common cardiac tumors; myxoma is the most common primary.",
+   "refs": "Study Guide 01.A.04, Malignant Cardiac Tumors"
+  },
+  {
+   "id": "PE3-08",
+   "topic": "Cardiac tumors",
+   "stem": "A small, mobile mass with a frond-like edge is attached by a short stalk to the downstream side of the aortic valve in a patient with a recent stroke and no fever. What is the most likely diagnosis?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "Lambl's excrescence only",
+    "Infective vegetation",
+    "Myxoma",
+    "Papillary fibroelastoma"
+   ],
+   "answer": "D",
+   "explanation": [
+    "Papillary fibroelastoma is the most common primary valve tumor. It is small, mobile, frond-like (sea anemone), and usually on the aortic valve, and it can embolize. Mobile lesions with stroke usually warrant resection.",
+    "Lambl's excrescences are thin, filamentous strands at the coaptation line. Vegetations occur with infection and valve destruction."
+   ],
+   "objective": "Papillary fibroelastoma: small frond-like valve tumor that can embolize.",
+   "refs": "Study Guide 01.A.04, Benign cardiac tumors",
+   "mediaNote": "TEE of a small frond-like mass on the aortic valve"
+  },
+  {
+   "id": "PE3-09",
+   "topic": "RV size",
+   "stem": "In the apical 4-chamber view, the RV is larger than the LV and forms the apex. How is RV size graded by the eyeball method?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "Normal",
+    "Mildly enlarged",
+    "Moderately enlarged",
+    "Severely enlarged"
+   ],
+   "answer": "D",
+   "explanation": [
+    "Normal RV is less than two thirds the size of the LV with the LV forming the apex. Equal size is moderate enlargement, and an RV larger than the LV is severe enlargement.",
+    "Use a non-foreshortened view, because foreshortening can make the RV look falsely large."
+   ],
+   "objective": "RV larger than LV (often forming the apex) = severely enlarged.",
+   "refs": "Study Guide B.01, Eyeball method",
+   "mediaNote": "Apical 4-chamber with RV larger than LV and RV forming the apex"
+  },
+  {
+   "id": "PE3-10",
+   "topic": "Heart-lung interactions",
+   "stem": "A patient with severe ARDS on high PEEP and plateau pressure of 32 cmH2O develops a dilated RV and septal dyskinesia. What is the most likely mechanism?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "Hypovolemia",
+    "Tension pneumothorax",
+    "Increased RV afterload from high transpulmonary pressure (acute cor pulmonale)",
+    "LV failure from myocardial infarction"
+   ],
+   "answer": "C",
+   "explanation": [
+    "High PEEP and plateau pressures compress pulmonary capillaries and raise RV afterload, causing acute cor pulmonale in a significant share of ARDS patients.",
+    "RV-protective ventilation lowers plateau pressure and driving pressure, avoids hypercapnia, and uses prone positioning."
+   ],
+   "objective": "High PEEP and plateau pressure can cause acute cor pulmonale in ARDS.",
+   "refs": "Study Guide 01.A.06, RV during Mechanical ventilation",
+   "mediaNote": "PSAX with septal flattening in an ARDS patient on high PEEP"
+  },
+  {
+   "id": "PE3-11",
+   "topic": "Pulmonary embolism",
+   "stem": "A hypotensive patient with suspected PE has a serpiginous, highly mobile thrombus in the RA and a dilated RV. What does this finding imply?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "Atrial myxoma",
+    "Thrombus in transit, which carries high mortality and needs urgent treatment",
+    "A benign Chiari network",
+    "Chronic, organized thrombus requiring no change in management"
+   ],
+   "answer": "B",
+   "explanation": [
+    "A mobile, worm-like right heart thrombus with acute RV strain is thrombus in transit from the deep veins. It carries a high risk of further embolism and death and calls for urgent therapy such as thrombolysis or embolectomy.",
+    "A Chiari network is thin and fenestrated and does not come with RV strain."
+   ],
+   "objective": "Right heart thrombus in transit is a high-risk PE finding.",
+   "refs": "Study Guide 02.C.03, Pulmonary embolism",
+   "mediaNote": "Apical 4-chamber with serpiginous mobile RA thrombus"
+  },
+  {
+   "id": "PE3-12",
+   "topic": "Pulmonary hypertension",
+   "stem": "A patient with a dilated RV has an RV free wall thickness of 9 mm and an RVSP of 85 mmHg. What does this suggest?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "Chronic pulmonary hypertension with RV hypertrophy",
+    "Acute massive PE in a previously normal RV",
+    "RV infarction",
+    "Normal RV"
+   ],
+   "answer": "A",
+   "explanation": [
+    "RV free wall thickness over 5 mm indicates hypertrophy, which takes time to develop. A hypertrophied RV can generate high systolic pressures, so an RVSP of 85 mmHg suggests chronic pulmonary hypertension.",
+    "An unconditioned RV in acute PE is usually thin-walled and rarely generates pressures much above 40 to 60 mmHg."
+   ],
+   "objective": "RV wall over 5 mm with very high RVSP suggests chronic pulmonary hypertension.",
+   "refs": "Study Guide 01.F.02, Pulmonary Hypertension",
+   "mediaNote": "Subcostal view of a thick RV free wall"
+  },
+  {
+   "id": "PE3-13",
+   "topic": "Pulmonary embolism",
+   "stem": "In a normotensive patient with confirmed PE, which echo finding is associated with a worse prognosis?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "Normal RV size",
+    "Normal TAPSE",
+    "RV free wall hypokinesis with an RV/LV ratio over 0.9",
+    "Small pericardial effusion only"
+   ],
+   "answer": "C",
+   "explanation": [
+    "RV dysfunction (dilation with an RV/LV ratio over 0.9, free wall hypokinesis, low TAPSE) in normotensive PE identifies intermediate-high risk patients who need close monitoring.",
+    "Normal RV size and function suggest lower risk."
+   ],
+   "objective": "In normotensive PE, RV dilation (RV/LV over 0.9) and hypokinesis predict worse outcomes.",
+   "refs": "Study Guide 02.C.03, Risk Stratification"
+  },
+  {
+   "id": "PE3-14",
+   "topic": "Bicuspid aortic valve",
+   "stem": "A parasternal short-axis view shows an aortic valve with a fish-mouth opening in systole and a raphe. Which associated condition should be evaluated?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "Ascending aortopathy and coarctation of the aorta",
+    "Ebstein anomaly",
+    "Pulmonic stenosis",
+    "Mitral stenosis"
+   ],
+   "answer": "A",
+   "explanation": [
+    "Bicuspid aortic valve is associated with dilation of the ascending aorta and with coarctation, which occurs in about 6% of patients. Image the ascending aorta and the descending aorta from the suprasternal view.",
+    "About half of patients with coarctation have a bicuspid aortic valve."
+   ],
+   "objective": "Bicuspid aortic valve: check for aortopathy and coarctation.",
+   "refs": "Study Guide 01.D.01, Bicuspid Aortic Valve",
+   "mediaNote": "PSAX of the aortic valve opening as a fish mouth"
+  },
+  {
+   "id": "PE3-15",
+   "topic": "Aortic stenosis",
+   "stem": "Why should continuous wave Doppler of aortic stenosis be recorded from multiple windows (apical, right parasternal, suprasternal)?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "To average the velocities from all windows",
+    "Because the apical window always overestimates velocity",
+    "To measure the LVOT diameter",
+    "To find the window most parallel to the jet, since angle error only underestimates velocity"
+   ],
+   "answer": "D",
+   "explanation": [
+    "Doppler is not angle corrected, so any misalignment underestimates velocity. The highest velocity from any window is taken as the most accurate.",
+    "Using only the apical window underestimates the true gradient in a meaningful share of patients. The dedicated nonimaging (Pedoff) probe helps in the right parasternal and suprasternal windows."
+   ],
+   "objective": "Report the highest AS velocity from multiple windows; misalignment only underestimates.",
+   "refs": "Study Guide 01.D.01.1, 3 locations for measurement of AS gradient"
+  },
+  {
+   "id": "PE3-16",
+   "topic": "Aortic regurgitation",
+   "stem": "Which AR EROA indicates severe aortic regurgitation?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "0.10 cm2",
+    "0.15 cm2",
+    "0.20 cm2",
+    "0.30 cm2 or more"
+   ],
+   "answer": "D",
+   "explanation": [
+    "For AR, EROA under 0.10 cm2 is mild, 0.10 to 0.29 cm2 is moderate, and 0.30 cm2 or more is severe. Regurgitant volume of 60 mL or more and regurgitant fraction of 50% or more are also severe.",
+    "PISA for AR is technically harder than for MR, so integrate it with vena contracta, flow reversal, and LV size."
+   ],
+   "objective": "Severe AR: EROA 0.30 cm2 or more, RVol 60 mL or more, RF 50% or more.",
+   "refs": "Study Guide 01.D.01, Proximal Flow Convergence",
+   "mediaNote": "Zoomed color Doppler of AR with PISA"
+  },
+  {
+   "id": "PE3-17",
+   "topic": "Mitral regurgitation",
+   "stem": "Stroke volume across the mitral annulus is 120 mL and LVOT stroke volume is 60 mL. There is no AR. What are the regurgitant volume and fraction?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "30 mL and 25%, mild MR",
+    "60 mL and 50%, severe MR",
+    "60 mL and 33%, moderate MR",
+    "120 mL and 100%"
+   ],
+   "answer": "B",
+   "explanation": [
+    "Regurgitant volume = mitral inflow SV - LVOT SV = 120 - 60 = 60 mL. Regurgitant fraction = 60 / 120 = 50%.",
+    "For primary MR, RVol of 60 mL or more and RF of 50% or more are severe."
+   ],
+   "objective": "RVol = MV SV - LVOT SV; RF = RVol / MV SV.",
+   "refs": "Study Guide 01.D.021, Continuity Equation"
+  },
+  {
+   "id": "PE3-18",
+   "topic": "Mitral regurgitation",
+   "stem": "An eccentric MR jet hugs the lateral LA wall and looks small by color jet area. Why might it be underestimated?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "Eccentric jets always come from mild MR",
+    "The wall-hugging (Coanda) effect flattens the jet so it occupies less visible area",
+    "High Nyquist limit always overestimates jets",
+    "Color jet area overestimates eccentric jets"
+   ],
+   "answer": "B",
+   "explanation": [
+    "An eccentric jet that attaches to the atrial wall loses momentum and spreads along the wall, so its color area underestimates severity. Eccentric jets often come from flail or prolapsing leaflets.",
+    "Use vena contracta, PISA, pulmonary vein flow, and quantitative methods instead of jet area."
+   ],
+   "objective": "Wall-hugging eccentric jets are underestimated by color jet area.",
+   "refs": "Study Guide 01.D.021, Regurgitant Jet area",
+   "mediaNote": "Apical view of an eccentric wall-hugging MR jet"
+  },
+  {
+   "id": "PE3-19",
+   "topic": "Mitral stenosis",
+   "stem": "A patient with moderate mitral stenosis develops atrial fibrillation with a rate of 130. Which change is expected?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "The mean transmitral gradient rises because diastole shortens",
+    "The gradient falls because flow increases",
+    "The pressure half-time shortens to normal",
+    "The mitral valve area falls"
+   ],
+   "answer": "A",
+   "explanation": [
+    "Mitral gradients depend strongly on heart rate and flow. Tachycardia shortens diastolic filling time, so the mean gradient rises and LA pressure increases, often causing pulmonary edema.",
+    "The anatomic valve area does not change. Rate control helps, and gradients should be reported with the heart rate."
+   ],
+   "objective": "Tachycardia raises the mean mitral gradient by shortening diastole.",
+   "refs": "Study Guide Hemodynamic Assessment of MS"
+  },
+  {
+   "id": "PE3-20",
+   "topic": "Congenital tricuspid",
+   "stem": "The septal tricuspid leaflet is displaced toward the apex by 12 mm/m2 compared with the mitral leaflet, with a large right atrium and atrialized RV. What is the diagnosis?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "Normal offset of the tricuspid valve",
+    "Rheumatic tricuspid stenosis",
+    "Ebstein anomaly",
+    "Carcinoid heart disease"
+   ],
+   "answer": "C",
+   "explanation": [
+    "The tricuspid valve normally sits slightly more apical than the mitral valve. Displacement of 8 mm/m2 or more diagnoses Ebstein anomaly, often with an atrialized RV, severe TR, and an ASD or PFO.",
+    "Carcinoid causes thickened, retracted, fixed leaflets without apical displacement."
+   ],
+   "objective": "Ebstein anomaly: apical displacement of the septal tricuspid leaflet of 8 mm/m2 or more.",
+   "refs": "Study Guide Ebstein's abnormality",
+   "mediaNote": "Apical 4-chamber showing apical displacement of the septal tricuspid leaflet"
+  },
+  {
+   "id": "PE3-21",
+   "topic": "Systemic disease",
+   "stem": "A patient with flushing and diarrhea has thickened, shortened, and retracted tricuspid leaflets fixed in a half-open position, with severe TR. What is the most likely cause?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "Endocarditis",
+    "Rheumatic heart disease",
+    "Carcinoid heart disease",
+    "Ebstein anomaly"
+   ],
+   "answer": "C",
+   "explanation": [
+    "Vasoactive substances from carcinoid tumors with liver metastases reach the right heart and cause fibrous plaques that stiffen and retract the tricuspid and pulmonic valves, causing severe regurgitation and sometimes stenosis.",
+    "The lungs inactivate these substances, so left-sided disease is uncommon unless there is a shunt or bronchial carcinoid."
+   ],
+   "objective": "Carcinoid heart disease: fixed, retracted tricuspid and pulmonic leaflets.",
+   "refs": "Study Guide 06, Carcinoid",
+   "mediaNote": "Apical 4-chamber of thickened, retracted tricuspid leaflets"
+  },
+  {
+   "id": "PE3-22",
+   "topic": "Prosthetic valves",
+   "stem": "For a mechanical mitral prosthesis, the VTI across the prosthesis divided by LVOT VTI is 2.8. What does this suggest?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "Prosthetic obstruction or significant prosthetic regurgitation",
+    "Normal finding after any mitral replacement",
+    "Severe aortic stenosis",
+    "Normal prosthetic function"
+   ],
+   "answer": "A",
+   "explanation": [
+    "A mitral prosthesis VTI ratio over about 2.2 to 2.5 suggests either obstruction or significant regurgitation, because more flow or a higher velocity crosses the prosthesis relative to forward LVOT flow.",
+    "Pressure half-time helps separate them: a long PHT suggests obstruction, while a normal PHT suggests regurgitation, often needing TEE."
+   ],
+   "objective": "Mitral prosthesis VTI ratio over about 2.2 suggests obstruction or regurgitation.",
+   "refs": "Study Guide 01.D.07, Mitral prothesis TVI Ratio"
+  },
+  {
+   "id": "PE3-23",
+   "topic": "Pericardial effusion",
+   "stem": "On TTE, the largest diastolic echo-free space around the heart measures 2.5 cm. How is the effusion sized?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "Small",
+    "Moderate",
+    "Large",
+    "Trivial"
+   ],
+   "answer": "C",
+   "explanation": [
+    "Pericardial effusions are commonly graded by the largest diastolic echo-free space: small under 1 cm, moderate 1 to 2 cm, and large over 2 cm.",
+    "Size does not determine tamponade; the speed of accumulation and pericardial compliance matter more."
+   ],
+   "objective": "Large pericardial effusion: echo-free space over 2 cm.",
+   "refs": "Study Guide 01.E.01, Size Quantification"
+  },
+  {
+   "id": "PE3-24",
+   "topic": "Pericardial hematoma",
+   "stem": "On the first day after cardiac surgery, a patient becomes hypotensive with rising filling pressures. TTE windows are poor and show only a small anterior effusion. What is the best next step?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "Reassure, because a small effusion cannot cause tamponade",
+    "Increase inotropes",
+    "Order a chest radiograph only",
+    "TEE to look for a localized posterior hematoma compressing a chamber"
+   ],
+   "answer": "D",
+   "explanation": [
+    "After cardiac surgery, clot can be loculated behind the heart and compress the LA or RA, causing tamponade without a large circumferential effusion. TTE windows are often poor after sternotomy.",
+    "TEE shows posterior collections and chamber compression well."
+   ],
+   "objective": "Post-op tamponade can come from a small loculated hematoma; use TEE.",
+   "refs": "Study Guide 01.E.03, Hematoma",
+   "mediaNote": "TEE showing a localized clot compressing the LA"
+  },
+  {
+   "id": "PE3-25",
+   "topic": "Coarctation",
+   "stem": "Suprasternal CW Doppler of the descending aorta shows a high systolic velocity with continued forward flow through diastole (diastolic tail). What is the most likely diagnosis?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "Normal descending aortic flow",
+    "Significant coarctation of the aorta",
+    "Patent ductus arteriosus",
+    "Severe aortic regurgitation"
+   ],
+   "answer": "B",
+   "explanation": [
+    "A significant coarctation causes a high systolic gradient and a persistent pressure gradient in diastole, producing a diastolic tail (sawtooth pattern).",
+    "Severe AR causes holodiastolic flow reversal, not forward flow. Normal descending aortic flow is systolic with little diastolic flow."
+   ],
+   "objective": "Coarctation: high systolic velocity with a forward diastolic tail.",
+   "refs": "Study Guide 01.F.01, Coarctation",
+   "mediaNote": "Suprasternal CW Doppler of the descending aorta"
+  },
+  {
+   "id": "PE3-26",
+   "topic": "Aortic dissection",
+   "stem": "In aortic dissection, which feature helps identify the true lumen on TEE?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "It is usually larger with spontaneous echo contrast",
+    "It expands during systole and has early systolic forward flow",
+    "It collapses during systole",
+    "It contains thrombus"
+   ],
+   "answer": "B",
+   "explanation": [
+    "The true lumen expands in systole and has brisk early systolic forward flow. The false lumen is often larger, with slow flow, spontaneous echo contrast, or thrombus, and is compressed during systole.",
+    "Identifying the true lumen matters for cannulation and endovascular repair."
+   ],
+   "objective": "True lumen expands in systole with early forward flow; the false lumen is larger with slow flow.",
+   "refs": "Study Guide 01.F.01, Differentiating True from False Lumens",
+   "mediaNote": "TEE short-axis of the descending aorta with two lumens"
+  },
+  {
+   "id": "PE3-27",
+   "topic": "Aorta",
+   "stem": "A patient develops sudden dyspnea and a continuous murmur. Color Doppler shows a continuous jet from the right coronary sinus into the RV outflow tract. What is the diagnosis?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "Perimembranous VSD",
+    "Coronary artery fistula only",
+    "Patent ductus arteriosus",
+    "Ruptured sinus of Valsalva aneurysm"
+   ],
+   "answer": "D",
+   "explanation": [
+    "A sinus of Valsalva aneurysm, most often from the right coronary sinus, can rupture into the RV or RA, causing a continuous left-to-right shunt because aortic pressure exceeds right heart pressure in systole and diastole.",
+    "A VSD jet is mainly systolic. A PDA flows from the descending aorta into the pulmonary artery."
+   ],
+   "objective": "Ruptured sinus of Valsalva aneurysm: continuous aorta-to-right-heart jet.",
+   "refs": "Study Guide 01.F.01, Sinus of Valsalva Aneurysm",
+   "mediaNote": "PSAX color Doppler of a ruptured sinus of Valsalva aneurysm"
+  },
+  {
+   "id": "PE3-28",
+   "topic": "IVC",
+   "stem": "A spontaneously breathing patient has an IVC of 2.4 cm that collapses more than 50% with a sniff. What is the estimated RAP?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "About 3 mmHg",
+    "About 8 mmHg",
+    "About 15 mmHg",
+    "Over 20 mmHg"
+   ],
+   "answer": "B",
+   "explanation": [
+    "IVC 2.1 cm or less with over 50% collapse suggests about 3 mmHg, and IVC over 2.1 cm with under 50% collapse suggests about 15 mmHg. Mixed findings, like a large IVC that collapses well, suggest an intermediate value of about 8 mmHg.",
+    "Young athletes can have a large IVC with normal RAP."
+   ],
+   "objective": "Mixed IVC findings suggest RAP of about 8 mmHg.",
+   "refs": "Study Guide 01.F.03, IVC and SVC",
+   "mediaNote": "Subcostal IVC with sniff"
+  },
+  {
+   "id": "PE3-29",
+   "topic": "Catheters",
+   "stem": "During internal jugular central line placement, why image the guidewire in the right atrium or the IVC-RA junction before dilating?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "To confirm venous placement before inserting a large dilator",
+    "To check the aortic valve",
+    "To measure RA pressure",
+    "To assess TR severity"
+   ],
+   "answer": "A",
+   "explanation": [
+    "Seeing the guidewire in the IVC or RA (or in the vein in long axis) confirms venous placement before dilation, preventing a large catheter from being placed into an artery.",
+    "Avoid advancing the wire deep into the RV, which can cause arrhythmias."
+   ],
+   "objective": "Confirm the guidewire is venous before dilation.",
+   "refs": "Study Guide 01.G.01, Catheters",
+   "mediaNote": "Subcostal bicaval view with guidewire entering the RA"
+  },
+  {
+   "id": "PE3-30",
+   "topic": "Structural devices",
+   "stem": "After transcatheter edge-to-edge mitral repair, which finding is concerning for significant iatrogenic mitral stenosis?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "Double-orifice appearance in short axis",
+    "Trace residual MR",
+    "Mean transmitral gradient over 5 mmHg at a normal heart rate",
+    "Reduced LA pressure"
+   ],
+   "answer": "C",
+   "explanation": [
+    "A double-orifice valve is the expected appearance. Because the clip reduces the valve area, check the mean gradient; a mean gradient over about 5 mmHg at a normal heart rate raises concern for clinically significant stenosis.",
+    "Report the heart rate with any mitral gradient."
+   ],
+   "objective": "After edge-to-edge repair, a mean gradient over about 5 mmHg suggests iatrogenic MS.",
+   "refs": "Study Guide 01.G.03, Mitra-Clip",
+   "mediaNote": "PSAX of a double-orifice mitral valve after MitraClip"
+  },
+  {
+   "id": "PE3-31",
+   "topic": "LVAD",
+   "stem": "Before LVAD implantation, which echo finding is a red flag that must be addressed at surgery?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "Mildly dilated LV",
+    "Moderate functional MR",
+    "Reduced LV ejection fraction",
+    "More than mild aortic regurgitation"
+   ],
+   "answer": "D",
+   "explanation": [
+    "The LVAD outflow raises aortic pressure in diastole, so AR worsens and creates a circular loop of blood from aorta to LV to pump. More than mild AR is usually repaired or replaced at implantation.",
+    "Other red flags include a PFO or ASD (risk of right-to-left shunt after unloading), LV thrombus, and significant RV dysfunction."
+   ],
+   "objective": "Pre-LVAD red flags: more than mild AR, PFO or ASD, LV thrombus, and RV failure.",
+   "refs": "Study Guide LVAD, Red-flag findings"
+  },
+  {
+   "id": "PE3-32",
+   "topic": "ECMO",
+   "stem": "During a VA ECMO weaning trial with flow reduced to about 1.5 L/min, which finding favors successful decannulation?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "LVOT VTI over 10 cm with LVEF over 20 to 25%",
+    "Severe RV dysfunction",
+    "LV dilation with spontaneous echo contrast",
+    "Aortic valve closed throughout the cycle"
+   ],
+   "answer": "A",
+   "explanation": [
+    "Reasonable native output at low ECMO flow, shown by an LVOT VTI over about 10 cm, LVEF over 20 to 25%, and good lateral mitral S', predicts successful weaning.",
+    "A closed aortic valve, LV distension, or RV failure suggests the heart cannot yet support the circulation."
+   ],
+   "objective": "VA ECMO weaning: LVOT VTI over about 10 cm at low flow is favorable.",
+   "refs": "Study Guide ECMO, VA ECMO",
+   "mediaNote": "LVOT VTI during a VA ECMO flow reduction trial"
+  },
+  {
+   "id": "PE3-33",
+   "topic": "Adult congenital",
+   "stem": "An adult with repaired Tetralogy of Fallot has a dilated RV. Which residual lesion is the most common cause?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "Severe mitral stenosis",
+    "Residual ASD",
+    "Severe pulmonic regurgitation",
+    "Aortic stenosis"
+   ],
+   "answer": "C",
+   "explanation": [
+    "Repair often involves a transannular patch across the pulmonic valve, leading to chronic severe pulmonic regurgitation and RV volume overload, a main reason for later pulmonic valve replacement.",
+    "Tetralogy includes a VSD, overriding aorta, RVOT obstruction, and RV hypertrophy."
+   ],
+   "objective": "Repaired Tetralogy commonly leaves severe PR with RV dilation.",
+   "refs": "Study Guide 01.I.06, Tetralogy of Fallot",
+   "mediaNote": "Parasternal views after Tetralogy of Fallot repair"
+  },
+  {
+   "id": "PE3-34",
+   "topic": "Adult congenital",
+   "stem": "Color Doppler shows continuous flow from the descending aorta into the main pulmonary artery near the left branch. What is the diagnosis?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "Ruptured sinus of Valsalva aneurysm",
+    "Secundum ASD",
+    "Pulmonic regurgitation",
+    "Patent ductus arteriosus"
+   ],
+   "answer": "D",
+   "explanation": [
+    "A PDA connects the descending aorta to the main pulmonary artery near the left PA origin. Aortic pressure exceeds PA pressure in systole and diastole, so flow is continuous.",
+    "A large PDA causes LA and LV volume overload, and Eisenmenger physiology can develop."
+   ],
+   "objective": "PDA: continuous flow from the descending aorta into the PA.",
+   "refs": "Study Guide Patent Ductus Arteriosus",
+   "mediaNote": "PSAX color Doppler of continuous flow into the main PA"
+  },
+  {
+   "id": "PE3-35",
+   "topic": "Shock",
+   "stem": "A ventilated trauma patient suddenly becomes hypotensive with high airway pressures. Anterior chest ultrasound on the right shows absent lung sliding and no B-lines. The IVC is plethoric. What is the most likely shock type?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "Obstructive shock from tension pneumothorax",
+    "Cardiogenic shock",
+    "Distributive shock",
+    "Hypovolemic shock"
+   ],
+   "answer": "A",
+   "explanation": [
+    "Absent sliding with no B-lines anteriorly in a ventilated patient with rising airway pressures and hypotension suggests tension pneumothorax, which obstructs venous return.",
+    "Treat with immediate decompression; do not delay to search for a lung point, which may be absent in a large pneumothorax."
+   ],
+   "objective": "Absent sliding with hypotension and plethoric IVC suggests tension pneumothorax.",
+   "refs": "Study Guide 02.A.01, Obstructive",
+   "mediaNote": "Anterior chest showing absent lung sliding in a hypotensive patient"
+  },
+  {
+   "id": "PE3-36",
+   "topic": "Fluid responsiveness",
+   "stem": "After a 250 mL mini-fluid challenge, LVOT VTI rises from 16 cm to 19 cm. What is the interpretation?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "About 19% rise, consistent with fluid responsiveness",
+    "About 3% rise, not fluid responsive",
+    "About 19% rise, but only a 25% rise is meaningful",
+    "Uninterpretable without pulse pressure variation"
+   ],
+   "answer": "A",
+   "explanation": [
+    "(19 - 16) / 16 = 19%. A rise in VTI or stroke volume of about 10% to 15% after a small bolus suggests the patient is on the steep part of the Frank-Starling curve.",
+    "A fluid challenge commits the patient to some fluid; a passive leg raise is reversible."
+   ],
+   "objective": "A VTI rise over 10% to 15% after a fluid challenge indicates fluid responsiveness.",
+   "refs": "Study Guide 02.B.01, Fluid challenge",
+   "mediaNote": "LVOT VTI before and after a 250 mL bolus"
+  },
+  {
+   "id": "PE3-37",
+   "topic": "Volume overload",
+   "stem": "A patient with AKI after aggressive resuscitation has diffuse B-lines, a plethoric IVC, hepatic S wave reversal, portal pulsatility of 70%, and monophasic intrarenal venous flow. What is the best next step?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "Give another fluid bolus for AKI",
+    "Stop fluids and start decongestion (diuresis or ultrafiltration)",
+    "Start an inotrope only",
+    "Repeat VExUS in 48 hours without changes"
+   ],
+   "answer": "B",
+   "explanation": [
+    "This is severe venous congestion (VExUS Grade 3) with pulmonary edema. Venous congestion is associated with AKI, so decongestion is the target.",
+    "More fluid would worsen organ congestion. Reassess VExUS as decongestion proceeds."
+   ],
+   "objective": "Severe VExUS congestion with AKI calls for decongestion, not more fluid.",
+   "refs": "Study Guide 02.B.02, Volume overload, VEXUS",
+   "mediaNote": "Lung B-lines with VExUS Grade 3"
+  },
+  {
+   "id": "PE3-38",
+   "topic": "Fluid responsiveness",
+   "stem": "A ventilated ARDS patient on 6 mL/kg tidal volume has pulse pressure variation of 8%. Why might this be misleading, and what can help?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "PPV is reliable at any tidal volume",
+    "PPV is only valid in spontaneous breathing",
+    "Low tidal volume causes false positives; stop measuring",
+    "Low tidal volume causes false negatives; a tidal volume challenge (raise to 8 mL/kg briefly) can unmask responsiveness"
+   ],
+   "answer": "D",
+   "explanation": [
+    "Small tidal volumes produce small swings in intrathoracic pressure, so respiratory variation can be low even in fluid-responsive patients. Briefly raising tidal volume to 8 mL/kg and seeing PPV rise by more than about 3.5% suggests responsiveness.",
+    "Passive leg raise with VTI is another option."
+   ],
+   "objective": "Low tidal volume causes false-negative respiratory variation; use a tidal volume challenge or PLR.",
+   "refs": "Study Guide 02.B.01, LVOT Velocity Variation pitfalls"
+  },
+  {
+   "id": "PE3-39",
+   "topic": "Stress echo",
+   "stem": "During dobutamine stress echo, which is an appropriate endpoint for stopping the test?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "Any premature ventricular contraction",
+    "Reaching 85% of age-predicted maximum heart rate",
+    "Systolic blood pressure of 140 mmHg",
+    "Heart rate of 100/min"
+   ],
+   "answer": "B",
+   "explanation": [
+    "Stress is considered adequate at 85% of the age-predicted maximum heart rate. Other endpoints include new wall motion abnormalities in two or more segments, significant arrhythmias, severe hypertension or hypotension, and intolerable symptoms.",
+    "Atropine can be added if the target heart rate is not reached."
+   ],
+   "objective": "Dobutamine stress target: 85% of age-predicted maximum heart rate.",
+   "refs": "Study Guide 02.C.01.1, Stress Testing Endpoints"
+  },
+  {
+   "id": "PE3-40",
+   "topic": "Regional wall motion",
+   "stem": "A myocardial segment moves inward less than normal and thickens less than 10% in systole. How is it scored?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "Dyskinetic",
+    "Normal",
+    "Akinetic",
+    "Hypokinetic"
+   ],
+   "answer": "C",
+   "explanation": [
+    "Wall motion is judged mainly by thickening. Normal thickening is over about 40%, hypokinesis is reduced but present, akinesis is under 10% thickening, and dyskinesis is outward systolic motion.",
+    "Assess thickening rather than motion alone, because tethering by neighboring segments can move a dead segment."
+   ],
+   "objective": "Akinesis: less than 10% systolic thickening.",
+   "refs": "Study Guide 02.C.01, Regional Wall Motion Abnormalities",
+   "mediaNote": "PSAX clip of a segment that does not thicken"
+  },
+  {
+   "id": "PE3-41",
+   "topic": "Trauma",
+   "stem": "In a supine trauma patient, where should you look first for pneumothorax on the eFAST exam?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "The apex in the supraclavicular fossa only",
+    "The costophrenic angles",
+    "The posterior lung bases",
+    "The anterior chest, around the 2nd to 4th intercostal spaces in the midclavicular line"
+   ],
+   "answer": "D",
+   "explanation": [
+    "Air rises to the least dependent part of the chest, which in a supine patient is anterior. Check several anterior rib spaces bilaterally for lung sliding.",
+    "Posterior bases are where fluid collects, not air."
+   ],
+   "objective": "In a supine patient, look anteriorly for pneumothorax.",
+   "refs": "Study Guide 02.D.01, e-FAST",
+   "mediaNote": "eFAST anterior chest views"
+  },
+  {
+   "id": "PE3-42",
+   "topic": "Cardiac arrest",
+   "stem": "During CPR with TEE monitoring, the ME long-axis view shows the area of maximal compression is over the aortic root and LVOT, which close with each compression. What should you do?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "Stop compressions to reassess",
+    "Increase compression rate to 140/min",
+    "Move the hand position so compressions are over the LV",
+    "No change, because this is ideal"
+   ],
+   "answer": "C",
+   "explanation": [
+    "Compressing the LVOT or aortic root obstructs forward flow. TEE lets you redirect hand position so the maximal compression point is over the LV.",
+    "TEE also allows near-continuous imaging during CPR, rhythm assessment, and detection of reversible causes."
+   ],
+   "objective": "TEE in arrest can guide hand position to compress the LV, not the LVOT.",
+   "refs": "Study Guide 02.F.03, Appropriate implementation",
+   "mediaNote": "TEE ME long-axis during CPR showing compression over the LVOT"
+  },
+  {
+   "id": "PE3-43",
+   "topic": "ARDS",
+   "stem": "Which lung ultrasound pattern favors ARDS over cardiogenic pulmonary edema?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "Patchy B-lines with spared areas, a thickened irregular pleural line, and subpleural consolidations",
+    "Diffuse homogeneous B-lines with a smooth pleural line",
+    "Bilateral A-lines with sliding",
+    "Large bilateral anechoic pleural effusions only"
+   ],
+   "answer": "A",
+   "explanation": [
+    "ARDS shows a nonhomogeneous pattern: patchy B-lines, spared areas of normal lung, an irregular thickened pleural line, reduced sliding, and subpleural consolidations.",
+    "Cardiogenic edema shows diffuse, symmetric B-lines with a thin, smooth pleural line and often bilateral effusions."
+   ],
+   "objective": "ARDS: patchy B-lines with spared areas and an irregular pleura.",
+   "refs": "Study Guide 04.A.04, ARDS",
+   "mediaNote": "Lung ultrasound with patchy B-lines and spared areas"
+  },
+  {
+   "id": "PE3-44",
+   "topic": "Physics",
+   "stem": "Ultrasound machines assume a speed of sound in soft tissue of 1,540 m/s. How long does it take for an echo to return from a reflector 5 cm deep?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "6.5 microseconds",
+    "13 microseconds",
+    "65 microseconds",
+    "130 microseconds"
+   ],
+   "answer": "C",
+   "explanation": [
+    "The 13 microsecond rule: every 1 cm of depth takes about 13 microseconds for the round trip. 5 cm x 13 = 65 microseconds.",
+    "Deeper imaging means a longer wait for each line, which lowers PRF and frame rate."
+   ],
+   "objective": "Round-trip time is about 13 microseconds per cm of depth.",
+   "refs": "Study Guide 03.A, Physics"
+  },
+  {
+   "id": "PE3-45",
+   "topic": "Physics",
+   "stem": "Why is a low-frequency transducer used for deep imaging in obese patients?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "Lower frequency gives better axial resolution",
+    "Lower frequency has less attenuation and better penetration",
+    "Lower frequency raises frame rate at depth",
+    "Lower frequency has a higher Nyquist limit for all depths and better lateral resolution"
+   ],
+   "answer": "B",
+   "explanation": [
+    "Attenuation in soft tissue is about 0.5 dB per cm per MHz, so it rises with frequency and depth. Lower frequencies penetrate further.",
+    "The tradeoff is poorer axial resolution. Lower frequency does help with Doppler aliasing because the Doppler shift is smaller."
+   ],
+   "objective": "Attenuation rises with frequency; lower frequency penetrates deeper but resolves less.",
+   "refs": "Study Guide 03.A, Transducer frequencies"
+  },
+  {
+   "id": "PE3-46",
+   "topic": "Artifacts",
+   "stem": "Equally spaced horizontal lines below the pleural line in normal aerated lung are an example of which artifact?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "Refraction",
+    "Mirror image",
+    "Side lobe",
+    "Reverberation (A-lines)"
+   ],
+   "answer": "D",
+   "explanation": [
+    "A-lines are reverberations between the transducer and the strongly reflective pleural line, repeating at multiples of the skin-to-pleura distance.",
+    "Comet-tail and ring-down artifacts are short-path reverberations that form vertical lines."
+   ],
+   "objective": "A-lines are reverberation artifacts.",
+   "refs": "Study Guide 03.B.01, Reverberations",
+   "mediaNote": "Linear probe showing horizontal reverberations below the pleural line"
+  },
+  {
+   "id": "PE3-47",
+   "topic": "Artifacts",
+   "stem": "In the parasternal short axis, the aortic valve appears duplicated side by side. Which artifact is most likely?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "Range ambiguity",
+    "Refraction",
+    "Reverberation",
+    "Acoustic enhancement"
+   ],
+   "answer": "B",
+   "explanation": [
+    "When sound bends as it crosses an interface between tissues of different speeds at an angle, such as through the rectus or chest wall, the machine misplaces structures sideways, creating a duplicate image.",
+    "Reverberation duplicates structures deeper along the same line, not side by side."
+   ],
+   "objective": "Refraction can duplicate a structure side by side.",
+   "refs": "Study Guide 03.B.06.1, Refraction Artifact",
+   "mediaNote": "PSAX with a duplicated aortic valve image"
+  },
+  {
+   "id": "PE3-48",
+   "topic": "TEE",
+   "stem": "Which TEE view is best for monitoring LV filling and wall motion in all three coronary territories at once?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "Transgastric mid-papillary short axis at about 0 degrees",
+    "Mid-esophageal bicaval",
+    "Upper esophageal aortic arch",
+    "Mid-esophageal ascending aortic short axis"
+   ],
+   "answer": "A",
+   "explanation": [
+    "The transgastric mid-papillary short axis shows segments supplied by the LAD, circumflex, and RCA in one image, making it ideal for monitoring volume status and ischemia.",
+    "The mid-esophageal 4-, 2-, and long-axis views together show all 17 segments."
+   ],
+   "objective": "TG mid-papillary SAX monitors LV filling and all three coronary territories.",
+   "refs": "Study Guide 03.D.1, Transgastric Views",
+   "mediaNote": "Transgastric mid-papillary short-axis view"
+  },
+  {
+   "id": "PE3-49",
+   "topic": "Abdominal",
+   "stem": "Before paracentesis, why use color Doppler on the abdominal wall at the planned site?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "To grade portal hypertension",
+    "To identify and avoid the inferior epigastric vessels",
+    "To find bowel peristalsis only",
+    "To measure ascites volume"
+   ],
+   "answer": "B",
+   "explanation": [
+    "The inferior epigastric vessels run along the lateral border of the rectus muscle. Color Doppler identifies them, reducing the risk of abdominal wall bleeding.",
+    "Choose a site with a deep fluid pocket and no bowel, usually lateral to the rectus in a lower quadrant."
+   ],
+   "objective": "Use color Doppler to avoid the inferior epigastric vessels during paracentesis.",
+   "refs": "Study Guide Paracentesis",
+   "mediaNote": "RUQ view with ascites and color Doppler of the abdominal wall"
+  },
+  {
+   "id": "PE3-50",
+   "topic": "Airway",
+   "stem": "During intubation, transverse ultrasound of the neck shows a second air-filled structure appearing next to the trachea (double tract sign). What does this mean?",
+   "image": "",
+   "video": "",
+   "choices": [
+    "Correct tracheal intubation",
+    "Right mainstem intubation",
+    "Esophageal intubation",
+    "Pneumothorax"
+   ],
+   "answer": "C",
+   "explanation": [
+    "When the tube enters the esophagus, a second bright, shadowing air interface appears beside the trachea. With tracheal intubation only one air-mucosa interface is seen.",
+    "After intubation, bilateral lung sliding supports tracheal placement and helps exclude mainstem intubation."
+   ],
+   "objective": "Double tract sign means esophageal intubation.",
+   "refs": "Study Guide 04.A.01, Postintubation assessments",
+   "mediaNote": "Transverse neck view during intubation showing the double tract sign"
+  }
+ ]
+};
+</script>
+
+<script>
+/* ===================== QUIZ ENGINE (no edits needed) ===================== */
+(function(){
+const Q = QUIZ.questions, N = Q.length, L = "ABCDEFGH";
+const KEY = "ppq_" + QUIZ.id;
+const app = document.getElementById("app");
+const store = {
+  get(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } },
+  set(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} },
+  del(k){ try{ localStorage.removeItem(k); }catch(e){} }
+};
+const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const logo = () => QUIZ.logo ? `<a class="logo" href="${esc(QUIZ.logoLink || "#")}" target="_blank" rel="noopener" title="Pulmonary POCUS"><img src="${esc(QUIZ.logo)}" alt="Pulmonary POCUS logo"></a>` : "";
+const ansIdx = q =>L.indexOf(String(q.answer).toUpperCase());
+const fmt = s => { s = Math.max(0, Math.round(s)); const h = Math.floor(s/3600), m = Math.floor(s%3600/60), x = s%60;
+  return (h ? h + ":" + String(m).padStart(2,"0") : m) + ":" + String(x).padStart(2,"0"); };
+
+let S = null;      // active block
+let V = null;      // what the exam screen is showing (S, or a review context)
+let mode = "tutor", tick = null, lastAttempt = null;
+
+const history = () => store.get(KEY + "_hist") || [];
+
+function score(a){
+  let c = 0, w = 0, o = 0;
+  Q.forEach((q,i) => { if (a.ans[i] == null) o++; else if (a.ans[i] === ansIdx(q)) c++; else w++; });
+  return { c, w, o, pct: Math.round(c / N * 100) };
+}
+
+/* ---------- media ---------- */
+function clip(src){
+  const yt = src.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{11})/);
+  if (yt) return `<div class="frame"><iframe src="https://www.youtube.com/embed/${yt[1]}?loop=1&playlist=${yt[1]}&rel=0&playsinline=1" title="Question video" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div><a class="refs" href="https://www.youtube.com/watch?v=${yt[1]}" target="_blank" rel="noopener">Video not playing? Watch on YouTube</a>`;
+  const vm = src.match(/vimeo\.com\/(\d+)/);
+  if (vm) return `<div class="frame"><iframe src="https://player.vimeo.com/video/${vm[1]}?loop=1" allowfullscreen></iframe></div>`;
+  if (/\.(mp4|webm|mov)(\?|$)/i.test(src)) return `<video src="${esc(src)}" autoplay muted loop playsinline controls></video>`;
+  return `<img src="${esc(src)}" alt="Question image" loading="lazy">`;
+}
+function media(...srcs){
+  const list = [].concat(...srcs.map(s => s || [])).filter(Boolean);
+  return list.length ? `<div class="media">${list.map(clip).join("")}</div>` : "";
+}
+
+/* ---------- start screen ---------- */
+function renderStart(){
+  stopTimer();
+  const inprog = store.get(KEY + "_cur"), h = history().slice().reverse(), name = store.get(KEY + "_name") || "";
+  app.innerHTML = `
+  <div class="page">
+    <div class="brand"><div><h1>${esc(QUIZ.title)}</h1><p>${esc(QUIZ.subtitle)}</p></div>${logo()}</div>
+    <div class="card">
+      <div class="field"><label for="nm">Your name (shown on your score report)</label><input id="nm" value="${esc(name)}" placeholder="Optional"></div>
+      <div class="modes">
+        <button class="mode ${mode==="tutor"?"on":""}" data-m="tutor"><b>Study mode</b><span>Untimed. See the answer and explanation after each question.</span></button>
+        <button class="mode ${mode==="timed"?"on":""}" data-m="timed"><b>Timed mode</b><span>${fmt(N*QUIZ.secondsPerQuestion)} for ${N} questions. Explanations at the end, like the real exam.</span></button>
+      </div>
+      <div class="actions">
+        <button class="btn" id="go">Start new block (${N} questions)</button>
+        ${inprog ? `<button class="btn ghost" id="resume">Resume block in progress (${inprog.mode}, item ${inprog.cur+1})</button>` : ""}
+      </div>
+    </div>
+    <div class="card solo">
+      <h2>Your previous attempts</h2>
+      ${h.length ? `<div class="scroll"><table><tr><th>Date</th><th>Mode</th><th>Score</th><th>Correct</th><th>Time</th><th></th></tr>
+        ${h.map(a => { const s = score(a); return `<tr><td>${new Date(a.date).toLocaleString([], {dateStyle:"medium", timeStyle:"short"})}</td><td>${a.mode}</td><td><b>${s.pct}%</b></td><td>${s.c}/${N}</td><td>${fmt(a.elapsed)}</td>
+          <td><button class="btn sm ghost" data-res="${a.id}">Results</button></td></tr>`; }).join("")}</table></div>
+        <div class="actions"><button class="btn sm ghost" id="clr">Clear history</button></div>`
+      : `<p class="muted">No attempts yet. Scores and question reviews are saved in this browser on this device.</p>`}
+    </div>
+  </div>`;
+  app.querySelectorAll(".mode").forEach(b => b.onclick = () => { mode = b.dataset.m; saveName(); renderStart(); });
+  app.querySelector("#go").onclick = () => { saveName(); start(); };
+  const r = app.querySelector("#resume"); if (r) r.onclick = () => { S = inprog; V = S; startTimer(); renderExam(); };
+  app.querySelectorAll("[data-res]").forEach(b => b.onclick = () => renderResults(history().find(a => a.id == b.dataset.res)));
+  const c = app.querySelector("#clr"); if (c) c.onclick = () => confirmBox("Clear all saved attempts?", "This removes your score history from this device.", "Clear", () => { store.del(KEY + "_hist"); renderStart(); });
+}
+function saveName(){ const el = app.querySelector("#nm"); if (el) store.set(KEY + "_name", el.value.trim()); }
+
+function start(){
+  S = { id: Date.now(), name: store.get(KEY + "_name") || "", mode, cur: 0,
+        ans: Array(N).fill(null), sub: Array(N).fill(false), flag: Array(N).fill(false), strike: Q.map(() => []),
+        time: Array(N).fill(0), elapsed: 0, limit: mode === "timed" ? N * QUIZ.secondsPerQuestion : 0, date: Date.now(), nav: false };
+  V = S; save(); startTimer(); renderExam();
+}
+function save(){ if (S) store.set(KEY + "_cur", S); }
+
+/* ---------- timer ---------- */
+function startTimer(){
+  stopTimer();
+  tick = setInterval(() => {
+    if (!S || V !== S) return;
+    S.elapsed++; S.time[S.cur]++;
+    if (S.elapsed % 5 === 0) save();
+    const t = document.getElementById("timer");
+    if (S.mode === "timed"){
+      const left = S.limit - S.elapsed;
+      if (t){ t.textContent = "⏱ " + fmt(left); t.classList.toggle("low", left <= 60); }
+      if (left <= 0){ toast("Time is up"); finish(); }
+    } else if (t) t.textContent = "⏱ " + fmt(S.elapsed);
+  }, 1000);
+}
+function stopTimer(){ if (tick) clearInterval(tick); tick = null; }
+
+/* ---------- exam / review screen ---------- */
+function visible(){
+  const all = [...Array(N).keys()];
+  if (!V.review || V.filter === "all") return all;
+  if (V.filter === "flagged") return all.filter(i => V.flag[i]);
+  return all.filter(i => V.ans[i] !== ansIdx(Q[i]));
+}
+function revealed(i){ return V.review || (V.mode === "tutor" && V.sub[i]); }
+
+function renderExam(){
+  const i = V.cur, q = Q[i], rev = revealed(i), a = V.ans[i], ci = ansIdx(q);
+  const vis = visible(), pos = vis.indexOf(i);
+  const timerTxt = V.review ? "Review" : "⏱ " + fmt(V.mode === "timed" ? V.limit - V.elapsed : V.elapsed);
+  const strike = (V.strike && V.strike[i]) || [];
+  let verdict = "";
+  if (rev){
+    if (a == null) verdict = `<div class="verdict om">Omitted. The correct answer is ${L[ci]}.</div>`;
+    else if (a === ci) verdict = `<div class="verdict ok">Correct</div>`;
+    else verdict = `<div class="verdict bad">Incorrect. The correct answer is ${L[ci]}.</div>`;
+  }
+  app.innerHTML = `
+  <div class="shell">
+    <header class="top">
+      <div class="l">
+        <button class="ic" id="navbtn" aria-label="Question list">☰</button>
+        <div><div class="item">Item ${i+1} of ${N}</div><div class="qid">Question Id: ${esc(q.id || i+1)}</div></div>
+        ${V.review ? "" : `<button class="flagbtn ${V.flag[i]?"on":""}" id="flag">⚑ ${V.flag[i]?"Marked":"Mark"}</button>`}
+      </div>
+      <div class="c">
+        <button class="ic" id="prev" ${pos<=0?"disabled":""} aria-label="Previous">◀</button>
+        <button class="ic" id="next" ${pos>=vis.length-1?"disabled":""} aria-label="Next">▶</button>
+      </div>
+      <div class="r"><span class="timer" id="timer">${timerTxt}</span>${logo()}</div>
+    </header>
+    <div class="body">
+      <aside class="nav ${V.nav?"open":""}" id="nav">
+        ${vis.map(k => {
+          const cls = ["n"]; if (k === i) cls.push("cur"); if (V.ans[k] != null) cls.push("ans");
+          if (revealed(k)){ cls.push("rv", V.ans[k] === ansIdx(Q[k]) ? "ok" : "bad"); }
+          return `<button class="${cls.join(" ")}" data-go="${k}">${k+1}${V.flag[k]?' <span class="fl">⚑</span>':""}</button>`;
+        }).join("")}
+      </aside>
+      <main class="main" id="main"><div class="qwrap">
+        <p class="stem">${esc(q.stem)}</p>
+        ${media(q.image, q.video)}${(!q.image && !q.video && q.mediaNote && /[?&]edit/.test(location.search)) ? `<div class="slot" style="border:2px dashed #b58900;border-radius:6px;padding:10px;margin:8px 0;color:#7a5c00;font-size:.9em"><b>Media slot ${esc(q.id)}:</b> ${esc(q.mediaNote)}</div>` : ""}
+        <div class="choices">
+          ${q.choices.map((c,k) => {
+            const cls = ["ch"];
+            if (rev){ if (k === ci) cls.push("ok"); else if (k === a) cls.push("bad"); }
+            else if (k === a) cls.push("sel");
+            if (!rev && strike.includes(k)) cls.push("strike");
+            const mark = rev ? (k === ci ? "✓" : k === a ? "✗" : "") : "";
+            return `<button class="${cls.join(" ")}" data-k="${k}" ${rev?"disabled":""}>
+              ${rev ? `<span class="mk">${mark}</span>` : `<span class="radio"></span>`}
+              <span class="txt"><b>${L[k]}.</b> ${esc(c)}</span></button>`;
+          }).join("")}
+        </div>
+        ${!rev ? `<p class="hint">Tip: right-click (or long-press) a choice to cross it out. Keys A to ${L[q.choices.length-1]} select, arrow keys move.</p>` : ""}
+        ${!rev && V.mode === "tutor" ? `<button class="btn" id="submit" ${a==null?"disabled":""}>Submit</button>` : ""}
+        ${rev ? `<div class="exp">${verdict}
+          <h3>Explanation</h3>
+          ${[].concat(q.explanation || []).map(p => `<p>${esc(p)}</p>`).join("")}
+          ${media(q.explainImage, q.explainVideo)}
+          ${q.objective ? `<div class="obj"><b>Educational objective</b>${esc(q.objective)}</div>` : ""}
+          ${q.refs ? `<p class="refs">References: ${esc(q.refs)}</p>` : ""}
+          ${V.review && V.time ? `<p class="refs">Time spent on this question: ${fmt(V.time[i])}</p>` : ""}
+        </div>` : ""}
+      </div></main>
+    </div>
+    <footer class="bot">
+      <span class="lab hidesm">${V.review ? "Reviewing: " + ({all:"all questions", incorrect:"incorrect and omitted", flagged:"marked questions"})[V.filter] : (V.mode === "tutor" ? "Study mode" : "Timed mode")}</span>
+      ${V.review ? `<button class="btn ghost sm" id="back">Back to results</button>` : `<button class="btn red sm" id="end">End block</button>`}
+    </footer>
+  </div>`;
+
+  const $ = s => app.querySelector(s);
+  $("#navbtn").onclick = () => { V.nav = !V.nav; $("#nav").classList.toggle("open", V.nav); };
+  $("#prev").onclick = () => go(vis[pos-1]);
+  $("#next").onclick = () => go(vis[pos+1]);
+  app.querySelectorAll("[data-go]").forEach(b => b.onclick = () => { if (window.innerWidth <= 760) V.nav = false; go(+b.dataset.go); });
+  app.querySelectorAll(".ch").forEach(b => {
+    b.onclick = () => { if (rev) return; V.ans[i] = +b.dataset.k; V.strike[i] = strike.filter(x => x !== +b.dataset.k); save(); renderExam(); };
+    b.oncontextmenu = e => { if (rev) return; e.preventDefault(); const k = +b.dataset.k;
+      V.strike[i] = strike.includes(k) ? strike.filter(x => x !== k) : strike.concat(k);
+      if (V.ans[i] === k) V.ans[i] = null; save(); renderExam(); };
+  });
+  if ($("#flag")) $("#flag").onclick = () => { V.flag[i] = !V.flag[i]; save(); renderExam(); };
+  if ($("#submit")) $("#submit").onclick = () => { V.sub[i] = true; save(); renderExam(); };
+  if ($("#end")) $("#end").onclick = () => {
+    const left = V.ans.filter(x => x == null).length;
+    confirmBox("End this block?", left ? `You have ${left} unanswered question${left>1?"s":""}. They will be scored as omitted.` : "All questions are answered.", "End block", finish);
+  };
+  if ($("#back")) $("#back").onclick = () => renderResults(V.attempt);
+}
+function go(k){ if (k == null) return; V.cur = k; save(); renderExam(); const m = document.getElementById("main"); if (m) m.scrollTop = 0; }
+
+document.addEventListener("keydown", e => {
+  if (!V || !document.getElementById("main") || document.querySelector(".modalbg")) return;
+  if (e.target.tagName === "INPUT") return;
+  const vis = visible(), pos = vis.indexOf(V.cur);
+  if (e.key === "ArrowRight" || e.key === "ArrowDown"){ e.preventDefault(); go(vis[pos+1]); }
+  else if (e.key === "ArrowLeft" || e.key === "ArrowUp"){ e.preventDefault(); go(vis[pos-1]); }
+  else if (!revealed(V.cur)){
+    const k = L.indexOf(e.key.toUpperCase());
+    if (k >= 0 && k < Q[V.cur].choices.length){ V.ans[V.cur] = k; save(); renderExam(); }
+    else if (e.key === "Enter" && V.mode === "tutor" && V.ans[V.cur] != null){ V.sub[V.cur] = true; save(); renderExam(); }
+  }
+});
+
+/* ---------- finish + results ---------- */
+function finish(){
+  stopTimer();
+  const a = { id: S.id, date: S.date, name: S.name, mode: S.mode, ans: S.ans, flag: S.flag, time: S.time, elapsed: S.elapsed };
+  const h = history().filter(x => x.id !== a.id); h.push(a); store.set(KEY + "_hist", h);
+  store.del(KEY + "_cur"); S = null;
+  closeModal(); renderResults(a);
+}
+
+function renderResults(a){
+  if (!a) return renderStart();
+  stopTimer(); V = null; lastAttempt = a;
+  const s = score(a), answered = N - s.o;
+  app.innerHTML = `
+  <div class="page">
+    <div class="brand"><div><h1>Score report: ${esc(QUIZ.title)}</h1>
+      <p>${a.name ? esc(a.name) + " | " : ""}${new Date(a.date).toLocaleString([], {dateStyle:"medium", timeStyle:"short"})} | ${a.mode === "tutor" ? "Study" : "Timed"} mode</p></div>${logo()}</div>
+    <div class="card">
+      <div class="scorebox">
+        <div><div class="big">${s.pct}%</div><div class="muted">Your score</div></div>
+        <div class="stats">
+          <div class="stat"><b style="color:var(--ok)">${s.c}</b><span>Correct</span></div>
+          <div class="stat"><b style="color:var(--bad)">${s.w}</b><span>Incorrect</span></div>
+          <div class="stat"><b>${s.o}</b><span>Omitted</span></div>
+          <div class="stat"><b>${fmt(a.elapsed)}</b><span>Total time</span></div>
+          <div class="stat"><b>${fmt(answered ? a.elapsed / N : 0)}</b><span>Avg per question</span></div>
+        </div>
+      </div>
+      <div class="meter"><i style="width:${s.c/N*100}%;background:var(--ok)"></i><i style="width:${s.w/N*100}%;background:var(--bad)"></i><i style="width:${s.o/N*100}%;background:#c3cad4"></i></div>
+      <div class="actions noprint">
+        <button class="btn" data-rv="all">Review all questions</button>
+        <button class="btn ghost" data-rv="incorrect">Review incorrect (${s.w + s.o})</button>
+        <button class="btn ghost" data-rv="flagged">Review marked (${a.flag.filter(Boolean).length})</button>
+        <button class="btn ghost" id="print">Print / save PDF</button>
+        <button class="btn ghost" id="home">Back to start</button>
+      </div>
+    </div>
+    <div class="card solo">
+      <h2>Question breakdown</h2>
+      <div class="scroll"><table>
+        <tr><th>#</th><th>Topic</th><th>Your answer</th><th>Correct</th><th>Result</th><th>Time</th></tr>
+        ${Q.map((q,i) => { const u = a.ans[i], ok = u === ansIdx(q);
+          return `<tr class="click" data-q="${i}"><td>${i+1}${a.flag[i]?' <span style="color:var(--flag)">⚑</span>':""}</td><td>${esc(q.topic || q.id)}</td>
+            <td>${u == null ? "None" : L[u]}</td><td>${L[ansIdx(q)]}</td>
+            <td>${u == null ? '<span class="pill om">Omitted</span>' : ok ? '<span class="pill ok">Correct</span>' : '<span class="pill bad">Incorrect</span>'}</td>
+            <td>${fmt(a.time[i])}</td></tr>`; }).join("")}
+      </table></div>
+      <p class="muted noprint">Tap any row to review that question with its explanation.</p>
+    </div>
+  </div>`;
+  app.querySelectorAll("[data-rv]").forEach(b => b.onclick = () => openReview(a, b.dataset.rv, null));
+  app.querySelectorAll("[data-q]").forEach(r => r.onclick = () => openReview(a, "all", +r.dataset.q));
+  app.querySelector("#print").onclick = () => window.print();
+  app.querySelector("#home").onclick = renderStart;
+  window.scrollTo(0, 0);
+}
+
+function openReview(a, filter, at){
+  V = { review: true, attempt: a, filter, mode: a.mode, ans: a.ans, flag: a.flag, time: a.time, sub: Array(N).fill(true), strike: Q.map(() => []), cur: 0, nav: false };
+  const vis = visible();
+  if (!vis.length){ V = null; toast(filter === "flagged" ? "No marked questions in this attempt" : "No incorrect questions. Nice work!"); return; }
+  V.cur = at != null ? at : vis[0];
+  renderExam();
+}
+
+/* ---------- helpers ---------- */
+function toast(msg){ const t = document.createElement("div"); t.className = "toast"; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 2200); }
+function closeModal(){ const m = document.querySelector(".modalbg"); if (m) m.remove(); }
+function confirmBox(title, body, okText, onOk){
+  closeModal();
+  const d = document.createElement("div"); d.className = "modalbg";
+  d.innerHTML = `<div class="modal"><h3>${esc(title)}</h3><p class="muted">${esc(body)}</p>
+    <div class="actions"><button class="btn ghost" id="mc">Cancel</button><button class="btn red" id="mo">${esc(okText)}</button></div></div>`;
+  document.body.appendChild(d);
+  d.querySelector("#mc").onclick = closeModal;
+  d.querySelector("#mo").onclick = () => { closeModal(); onOk(); };
+  d.onclick = e => { if (e.target === d) closeModal(); };
+}
+
+renderStart();
+})();
+</script>
+</body>
+</html>
